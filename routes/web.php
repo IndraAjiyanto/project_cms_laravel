@@ -8,6 +8,8 @@ use App\Models\Coment;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TambahController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\KoleksiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,28 +22,16 @@ use App\Http\Controllers\RegisterController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('home',['tittle'=>'Home']);
-// });
-
 Route::get('/register',[RegisterController::class, 'index'])->name('register');
 Route::post('/register',[RegisterController::class, 'store'])->name('tambahRegister');
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/tambah', [TambahController::class, 'index'])->name('tambah');
 
-Route::get('/article', function () {
-    return view('article',['articles'=> Article::all()]);
-});
+Route::get('/article', [ArticleController::class, 'index'])->name('article');
+Route::get('/article/{article:tittle}', [ArticleController::class, 'single'])->name('article_single');
 
-Route::get('/article/{article:tittle}', function (Article $article) {
-    return view('article_single',['tittle'=>$article->tittle, 'articles'=>$article, 'coments'=>$article->coment]);
-});
-
-Route::get('/koleksi', function () {
-    return view('koleksi',['articles'=> Article::all()]);
-});
-
+Route::get('/koleksi', [KoleksiController::class, 'index'])->name('koleksi');
 Route::get('/koleksi/{user}', function (User $user) {
     return view('koleksi',['tittle'=>$user->name, 'articles'=>$user->articles]);
 });
